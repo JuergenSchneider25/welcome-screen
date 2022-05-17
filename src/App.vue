@@ -1,6 +1,44 @@
 <template>
   <div id="app">
     <h1>Welcome to Opportunity</h1>
+    <span> {{ currentDate() }}</span>
+    <!-- <span>{{ dateTime() }}</span>  -->
+    <p></p>
+    <ul>
+      <li>
+        <!-- <span>08:00 </span> -->
+      </li>
+    </ul>
+
+    <ul class="ul">
+      <li>
+        <span style="color: red"> 14:00 Uhr </span> <br />
+        <span style="color: orange"> Basisbeschäftigung Besuch</span> <br />
+        <span style="color: orange">
+          Interessierte für den zweiten Kurs werden uns besuchen</span
+        >
+      </li>
+    </ul>
+
+    <ul class="ul">
+      <li>
+        <span style="color: red"> 14:00 Uhr </span> <br />
+        <span style="color: orange"> Basisbeschäftigung Besuch</span> <br />
+        <span style="color: orange">
+          Interessierte für den zweiten Kurs werden uns besuchen</span
+        >
+      </li>
+    </ul>
+
+    <ul class="ul">
+      <li>
+        <span style="color: red"> 14:00 Uhr </span> <br />
+        <span style="color: orange"> Basisbeschäftigung Besuch</span> <br />
+        <span style="color: orange">
+          Interessierte für den zweiten Kurs werden uns besuchen</span
+        >
+      </li>
+    </ul>
 
     <footer class="footer">
       <img class="img-footer" alt="SEB Logo" src="./assets/STZH_SEB_Logo.png" />
@@ -15,7 +53,7 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 
 export default {
   name: "App",
@@ -29,7 +67,7 @@ export default {
 
   computed: {
     function() {
-      return "https://sheets.googleapis.com/v4/spreadsheets/${this.sheet_id}/values:batchGet?ranges=A1%3AE100&valueRenderOption=FORMATTED_VALUE&key=${this.api_token};";
+      return "https://sheets.googleapis.com/v4/spreadsheets/${this.sheet_id}/values:batchGet?ranges=A2%3AE100&valueRenderOption=FORMATTED_VALUE&key=${this.api_token};";
     },
   },
 
@@ -67,9 +105,36 @@ footer {
   left: 0px;
   bottom: 0px;
   width: 100%;
+  background: #E8EFF4;
 }
 
 .footer img {
   height: 50px;
+}
+
+.ul {
+  margin-top: 60px;
+  margin-bottom: 85px;
+  margin-right: 12px;
+  margin-left: 10px;
+  left: 0px;
+  right: 0px;
+  top: 70px;
+  border-radius: 5px;
+  padding: 3rem;
+  background: #0f05a0;
+}
+
+.li {
+  margin-top: 10px;
+  margin-bottom: 80px;
+  margin-right: 150px;
+  margin-left: 20px;
+  font-family: "Inter";
+  font-style: bold;
+  font-weight: 900;
+  font-size: 58px;
+  line-height: 86px;
+  color: #eb5e00;
 }
 </style>
