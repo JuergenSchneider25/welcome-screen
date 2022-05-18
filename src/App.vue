@@ -1,21 +1,27 @@
 <template>
   <div id="app">
-<h1 class="site-title">{{ title }}</h1>
+    <h1 class="site-title">{{ title }}</h1>
     <!-- <h2 class="site-description">{{ currentDate() }}</h2> -->
 
-
-    <ul>
+    <ul v-if="entries" class="ul">
       <li v-for="entry in entries" :key="entry.id">
-        <span style="color: red"> {{ entry[0]}} uhr {{entry[1].replaceAll("/",".")}}</span><br/>
-        <span style="color: orange"> {{entry[2]}}</span> <br/>
-        <span style="color: orange"> {{entry [3]}}</span> <br/>
+        <span style="color: red">
+          {{ entry[0] }} uhr {{ entry[1].replaceAll("/", ".") }}</span
+        ><br />
+        <span style="color: orange"> {{ entry[2] }}</span> <br />
+        <span style="color: orange"> {{ entry[3] }}</span> <br />
       </li>
     </ul>
 
+    <span v-else> No Events! </span>
 
     <footer class="footer">
       <img class="img-footer" alt="SEB Logo" src="./assets/STZH_SEB_Logo.png" />
-      <img class="img-footer" alt="Opportunity" src="./assets/Opportunity.png"/>
+      <img
+        class="img-footer"
+        alt="Opportunity"
+        src="./assets/Opportunity.png"
+      />
       <img class="img-footer" alt="SAG Logo" src="./assets/SAG_Logo_De.png" />
     </footer>
   </div>
@@ -48,7 +54,10 @@ export default {
         this.entries = response.data.valueRanges[0].values;
       });
     },
-
+    refreshData() {
+      this.currentData();
+      this.getData ();
+    },
     currentDate(){
       const current = new Date();
       const day = current.getDate();
@@ -62,7 +71,8 @@ export default {
     }
   },
   mounted() {
-    this.getData();
+     this.refreshData();
+    setInterval( this.refreshData ,1800000)
   }
 };
 
