@@ -1,91 +1,73 @@
 <template>
   <div id="app">
-    <h1>Welcome to Opportunity</h1>
-    <span> {{ currentDate() }}</span>
-    <!-- <span>{{ dateTime() }}</span>  -->
-    <p></p>
+<h1 class="site-title">{{ title }}</h1>
+    <!-- <h2 class="site-description">{{ currentDate() }}</h2> -->
+
+
     <ul>
-      <li>
-        <!-- <span>08:00 </span> -->
+      <li v-for="entry in entries" :key="entry.id">
+        <span style="color: red"> {{ entry[0]}} uhr {{entry[1].replaceAll("/",".")}}</span><br/>
+        <span style="color: orange"> {{entry[2]}}</span> <br/>
+        <span style="color: orange"> {{entry [3]}}</span> <br/>
       </li>
     </ul>
 
-    <ul class="ul">
-      <li>
-        <span style="color: red"> 14:00 Uhr </span> <br />
-        <span style="color: orange"> Basisbeschäftigung Besuch</span> <br />
-        <span style="color: orange">
-          Interessierte für den zweiten Kurs werden uns besuchen</span
-        >
-      </li>
-    </ul>
-
-    <ul class="ul">
-      <li>
-        <span style="color: red"> 14:00 Uhr </span> <br />
-        <span style="color: orange"> Basisbeschäftigung Besuch</span> <br />
-        <span style="color: orange">
-          Interessierte für den zweiten Kurs werden uns besuchen</span
-        >
-      </li>
-    </ul>
-
-    <ul class="ul">
-      <li>
-        <span style="color: red"> 14:00 Uhr </span> <br />
-        <span style="color: orange"> Basisbeschäftigung Besuch</span> <br />
-        <span style="color: orange">
-          Interessierte für den zweiten Kurs werden uns besuchen</span
-        >
-      </li>
-    </ul>
 
     <footer class="footer">
       <img class="img-footer" alt="SEB Logo" src="./assets/STZH_SEB_Logo.png" />
+      <img class="img-footer" alt="Opportunity" src="./assets/Opportunity.png"/>
       <img class="img-footer" alt="SAG Logo" src="./assets/SAG_Logo_De.png" />
-      <img
-        class="img-footer"
-        alt="Opportunity"
-        src="./assets/Opportunity.png"
-      />
     </footer>
   </div>
 </template>
 
+
 <script>
-// import axios from "axios";
+import axios from "axios";
 
 export default {
   name: "App",
-  data() {
-    return {
+  data(){
+    return{
       title: "Welcome to Opportunity",
-      sheet_id: "spreadsheets/d/1a81aI0Y8ViZO0tI92h2YSMqVQJ8hmNNMyMylXgvwiU4",
-      api_token: "AIzaSyA-qeDXOhEeQDA0vQf7LgkF7DQtGnAtmAU",
-    };
+      sheet_id: "1a81aI0Y8ViZO0tI92h2YSMqVQJ8hmNNMyMylXgvwiU4",
+      api_token:"AIzaSyA-qeDXOhEeQDA0vQf7LgkF7DQtGnAtmAU",
+      entries:[],
+    }
   },
 
-  computed: {
-    function() {
-      return "https://sheets.googleapis.com/v4/spreadsheets/${this.sheet_id}/values:batchGet?ranges=A2%3AE100&valueRenderOption=FORMATTED_VALUE&key=${this.api_token};";
+  computed:{
+    gsheet_url(){
+      return `https://sheets.googleapis.com/v4/spreadsheets/${this.sheet_id}/values:batchGet?ranges=A2%3AE100&valueRenderOption=FORMATTED_VALUE&key=${this.api_token}`;
+    }
+  },
+
+  methods:{
+    getData(){
+      axios.get(this.gsheet_url).then((response)=>{
+        this.entries = response.data.valueRanges[0].values;
+      });
     },
-  },
 
-  methods: {
-    currentDate() {
+    currentDate(){
       const current = new Date();
       const day = current.getDate();
-      const month = current.getMonth() + 1;
+      const month = (current.getMonth()+1);
       const year = current.getFullYear();
       const dateTime = day + "." + month + "." + year;
       if (month < 10) {
         return day + "." + "0" + month + "." + year;
       }
       return dateTime;
-    },
+    }
   },
+  mounted() {
+    this.getData();
+  }
 };
+
 </script>
+
 
 <style>
 #app {
@@ -95,17 +77,19 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  background: #e8eff4;
 }
 
 footer {
-  position: fixed;
   display: flex;
   justify-content: space-between;
   box-sizing: border-box;
-  left: 0px;
+  position: fixed;
   bottom: 0px;
+  left: 0px;
   width: 100%;
-  background: #E8EFF4;
+  padding: 40px;
+  background: #ffffff;
 }
 
 .footer img {
