@@ -1,5 +1,7 @@
 # welcome-screen
 
+![welcome-screen-kyle](https://user-images.githubusercontent.com/98735266/169266974-b72c8d3d-df97-4d5d-b9cf-450ba37dbbad.png)
+
 ## Project setup
 ```
 npm install
