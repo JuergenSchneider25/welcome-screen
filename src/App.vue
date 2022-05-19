@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <h1 class="site-title">{{ title }}</h1>
-    <!-- <h2 class="site-description">{{ currentDate() }}</h2> -->
+    <h1 class="title">{{ title }}</h1>
+    <h2 class="date"> {{currentDate()}} </h2>
 
     <ul v-if="entries" class="ul">
-      <li v-for="entry in entries" :key="entry.id">
+      <li class="li" v-for="entry in entries" :key="entry.id">
         <span style="color: red">
           {{ entry[0] }} uhr {{ entry[1].replaceAll("/", ".") }}</span
         ><br />
@@ -33,61 +33,94 @@ import axios from "axios";
 
 export default {
   name: "App",
-  data(){
-    return{
+  data() {
+    return {
       title: "Welcome to Opportunity",
       sheet_id: "1a81aI0Y8ViZO0tI92h2YSMqVQJ8hmNNMyMylXgvwiU4",
-      api_token:"AIzaSyA-qeDXOhEeQDA0vQf7LgkF7DQtGnAtmAU",
-      entries:[],
-    }
+      api_token: "AIzaSyA-qeDXOhEeQDA0vQf7LgkF7DQtGnAtmAU",
+      entries: [],
+    };
   },
 
-  computed:{
-    gsheet_url(){
+  computed: {
+    gsheet_url() {
       return `https://sheets.googleapis.com/v4/spreadsheets/${this.sheet_id}/values:batchGet?ranges=A2%3AE100&valueRenderOption=FORMATTED_VALUE&key=${this.api_token}`;
-    }
+    },
   },
 
-  methods:{
-    getData(){
-      axios.get(this.gsheet_url).then((response)=>{
+  methods: {
+    getData() {
+      axios.get(this.gsheet_url).then((response) => {
         this.entries = response.data.valueRanges[0].values;
       });
     },
-    refreshData() {
-      this.currentData();
-      this.getData ();
-    },
-    currentDate(){
+
+    currentDate() {
       const current = new Date();
       const day = current.getDate();
-      const month = (current.getMonth()+1);
+      const month = current.getMonth() + 1;
       const year = current.getFullYear();
       const dateTime = day + "." + month + "." + year;
       if (month < 10) {
         return day + "." + "0" + month + "." + year;
       }
       return dateTime;
+    },
+
+    refreshData() {
+      this.currentDate();
+      this.getData();
     }
   },
-  mounted() {
-     this.refreshData();
-    setInterval( this.refreshData ,1800000)
-  }
-};
 
+  mounted() {
+    this.refreshData();
+    setInterval(this.refreshData(), /*1800000000*/);
+  },
+};
 </script>
 
 
 <style>
+body{
+  background: #e8e7f3;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Inter", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
   margin-top: 60px;
-  background: #e8eff4;
+  color: #393b3d;
+}
+
+.title {
+  margin-left: 4rem;
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.date {
+  margin-left: 4rem;
+  font-size: 5rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #8e8e91;
+}
+
+
+.ul {
+  list-style-type: none;
+}
+
+.li {
+  margin: 60px;
+  padding: 3rem;
+  background: #0f05a0;
+  font-weight: 900;
+  font-size: 58px;
+  line-height: 86px;
+  color: #eb5e00;
 }
 
 footer {
@@ -106,29 +139,4 @@ footer {
   height: 50px;
 }
 
-.ul {
-  margin-top: 60px;
-  margin-bottom: 85px;
-  margin-right: 12px;
-  margin-left: 10px;
-  left: 0px;
-  right: 0px;
-  top: 70px;
-  border-radius: 5px;
-  padding: 3rem;
-  background: #0f05a0;
-}
-
-.li {
-  margin-top: 10px;
-  margin-bottom: 80px;
-  margin-right: 150px;
-  margin-left: 20px;
-  font-family: "Inter";
-  font-style: bold;
-  font-weight: 900;
-  font-size: 58px;
-  line-height: 86px;
-  color: #eb5e00;
-}
 </style>
